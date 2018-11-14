@@ -7,33 +7,41 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import de.codeelements.storageexperiments.R
-import kotlinx.android.synthetic.main.main_fragment.*
+import de.codeelements.storageexperiments.createNoteActivityIntent
+import kotlinx.android.synthetic.main.fragment_list.*
 
-class MainFragment : Fragment() {
+class NotesListFragment : Fragment() {
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() = NotesListFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: NotesListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.main_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         collapsingToolbarLayout.title = getText(R.string.app_name)
+
+        actionAdd.setOnClickListener {
+            context?.run {
+                startActivity(
+                    createNoteActivityIntent()
+                )
+            }
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
+        viewModel = ViewModelProviders.of(this).get(NotesListViewModel::class.java)
     }
 
 }
