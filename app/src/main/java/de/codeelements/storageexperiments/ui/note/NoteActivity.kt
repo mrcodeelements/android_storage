@@ -1,11 +1,11 @@
-package de.codeelements.storageexperiments
+package de.codeelements.storageexperiments.ui.note
 
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import de.codeelements.storageexperiments.ui.main.NoteViewModel
+import de.codeelements.storageexperiments.R
 
 /**
  * Created by MaikRiechel (Codeelements) on 14.11.2018.

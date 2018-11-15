@@ -1,4 +1,4 @@
-package de.codeelements.storageexperiments.ui.main
+package de.codeelements.storageexperiments.ui.note
 
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
@@ -24,10 +24,10 @@ class NoteFragment : Fragment() {
         notesViewModel = ViewModelProviders.of(activity!!)[NoteViewModel::class.java]
     }
 
-    private var notesViewHolder: NotesViewHolder? = null
+    private var notesViewHolder: NoteViewHolder? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        NotesViewHolder(inflater, container, notesViewModel).also { notesViewHolder = it }.view
+        NoteViewHolder(inflater, container, notesViewModel).also { notesViewHolder = it }.view
 
     override fun onDestroyView() {
         super.onDestroyView()

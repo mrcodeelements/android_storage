@@ -1,4 +1,4 @@
-package de.codeelements.storageexperiments.ui.main
+package de.codeelements.storageexperiments.ui.note
 
 import android.arch.lifecycle.ViewModel
 import de.codeelements.storageexperiments.model.Note

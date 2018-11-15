@@ -9,8 +9,14 @@ import io.reactivex.Observable
 
 class ObjectBoxStorage(application: Application) : Storage {
     private val objectBox = MyObjectBox.builder().androidContext(application).build()
-
     private val noteBox = objectBox.boxFor(ObjectBoxNote::class.java)
+
+    override val notesObservable: Observable<List<Note>>
+        get() = RxQuery.observable(noteBox.query().build()).map {
+            it.map { objectBoxNote: ObjectBoxNote ->
+                Note(objectBoxNote.id, objectBoxNote.title, objectBoxNote.text)
+            }
+        }
 
     override fun observeNote(id: Long): Observable<Note> =
         RxQuery.observable(noteBox.query().build())

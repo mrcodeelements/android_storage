@@ -1,10 +1,11 @@
-package de.codeelements.storageexperiments.ui.main
+package de.codeelements.storageexperiments.ui.notelist
 
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import de.codeelements.storageexperiments.R
 import de.codeelements.storageexperiments.extension.inflate
 import de.codeelements.storageexperiments.model.Note
+import de.codeelements.storageexperiments.ui.ItemViewHolder
 import kotlinx.android.synthetic.main.item_note.view.*
 
 class NoteAdapter : RecyclerView.Adapter<NoteViewHolder>() {
@@ -15,7 +16,8 @@ class NoteAdapter : RecyclerView.Adapter<NoteViewHolder>() {
             notifyDataSetChanged()
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, position: Int) = NoteViewHolder(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, position: Int) =
+        NoteViewHolder(parent)
 
     override fun getItemCount() = items?.size ?: 0
 

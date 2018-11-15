@@ -1,4 +1,4 @@
-package de.codeelements.storageexperiments.ui.main
+package de.codeelements.storageexperiments.ui.notelist
 
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import de.codeelements.storageexperiments.R
-import de.codeelements.storageexperiments.createNoteActivityIntent
+import de.codeelements.storageexperiments.ui.note.createNoteActivityIntent
 import kotlinx.android.synthetic.main.fragment_list.*
 
 class NotesListFragment : Fragment() {
@@ -19,11 +19,20 @@ class NotesListFragment : Fragment() {
 
     private lateinit var viewModel: NotesListViewModel
 
+    private var noteListViewHolder: NoteListViewHolder? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.fragment_list, container, false)
+    ) = NoteListViewHolder(inflater, container, viewModel).also { noteListViewHolder = it }.view
+
+    override fun onDestroyView() {
+        noteListViewHolder = noteListViewHolder?.run {
+            onDestroy()
+            null
+        }
+
+        super.onDestroyView()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
