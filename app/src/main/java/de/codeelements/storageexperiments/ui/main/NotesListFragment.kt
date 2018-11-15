@@ -1,6 +1,7 @@
 package de.codeelements.storageexperiments.ui.main
 
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -39,8 +40,8 @@ class NotesListFragment : Fragment() {
         }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
         viewModel = ViewModelProviders.of(this).get(NotesListViewModel::class.java)
     }
 

@@ -17,13 +17,15 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="24sp"
+            android:textSize="22sp"
             android:textStyle="bold"
+            android:hint="@string/title"
             app:autoSizeTextType="uniform"
             tools:text="@tools:sample/lorem" />
 
         <TextView
             android:id="@+id/text"
+            android:hint="@string/text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="@tools:sample/lorem" />
