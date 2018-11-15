@@ -4,6 +4,7 @@ import android.app.Application
 import de.codeelements.storageexperiments.model.Note
 import de.codeelements.storageexperiments.storage.objectbox.MyObjectBox
 import de.codeelements.storageexperiments.storage.objectbox.ObjectBoxNote
+import de.codeelements.storageexperiments.storage.objectbox.ObjectBoxNote_
 import io.objectbox.rx.RxQuery
 import io.reactivex.Observable
 
@@ -19,7 +20,7 @@ class ObjectBoxStorage(application: Application) : Storage {
         }
 
     override fun observeNote(id: Long): Observable<Note> =
-        RxQuery.observable(noteBox.query().build())
+        RxQuery.observable(noteBox.query().equal(ObjectBoxNote_.id, id).build())
             .filter {
                 it.isNotEmpty()
             }.map {

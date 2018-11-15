@@ -6,6 +6,7 @@ import de.codeelements.storageexperiments.R
 import de.codeelements.storageexperiments.extension.inflate
 import de.codeelements.storageexperiments.model.Note
 import de.codeelements.storageexperiments.ui.ItemViewHolder
+import de.codeelements.storageexperiments.ui.note.createNoteActivityIntent
 import kotlinx.android.synthetic.main.item_note.view.*
 
 class NoteAdapter : RecyclerView.Adapter<NoteViewHolder>() {
@@ -34,8 +35,19 @@ class NoteAdapter : RecyclerView.Adapter<NoteViewHolder>() {
 }
 
 class NoteViewHolder(parent: ViewGroup) : ItemViewHolder<Note>(parent.inflate(R.layout.item_note)) {
+
     private val titleView = itemView.title
     private val textView = itemView.text
+
+    init {
+        itemView.setOnClickListener { view ->
+            item?.also { item ->
+                view.context.apply {
+                    startActivity(createNoteActivityIntent(item.id))
+                }
+            }
+        }
+    }
 
     override fun onBind(item: Note?) {
         item?.run {

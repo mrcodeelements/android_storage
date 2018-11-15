@@ -3,7 +3,6 @@ package de.codeelements.storageexperiments.ui.note
 import android.arch.lifecycle.ViewModel
 import de.codeelements.storageexperiments.model.Note
 import de.codeelements.storageexperiments.storage.StorageProvider
-import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 
 class NoteViewModel : ViewModel() {
@@ -26,5 +25,5 @@ class NoteViewModel : ViewModel() {
         }
     }
 
-    val noteObservable get() = noteSubject as Observable<Note>
+    val noteObservable get() = noteSubject.replay(1).autoConnect()
 }
