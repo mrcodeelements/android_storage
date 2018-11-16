@@ -1,6 +1,7 @@
 package de.codeelements.storageexperiments.storage
 
 import de.codeelements.storageexperiments.model.Note
+import io.reactivex.Completable
 import io.reactivex.Observable
 
 /**
@@ -10,5 +11,5 @@ interface Storage {
     val notesObservable: Observable<List<Note>>
 
     fun observeNote(id: Long): Observable<Note>
-    fun store(note: Note)
+    fun store(note: Note): Completable
 }

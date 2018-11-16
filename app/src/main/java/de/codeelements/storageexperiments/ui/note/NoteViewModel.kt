@@ -31,7 +31,7 @@ class NoteViewModel : ViewModel() {
 
     fun storeNote(title: String, text: String) {
         noteSubject.value?.also {
-            storage.store(it.copy(title = title, text = text))
+            storage.store(it.copy(title = title, text = text)).subscribe()
         }
     }
 
