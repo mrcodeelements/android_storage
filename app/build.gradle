@@ -1,8 +1,7 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 def sdkVersion = 28
 
@@ -42,7 +41,6 @@ android {
         objectbox {
             dimension "storage"
 
-            apply plugin: 'kotlin-kapt'
             apply plugin: 'io.objectbox'
 
             dependencies {
@@ -52,8 +50,6 @@ android {
 
         room {
             dimension "storage"
-
-            apply plugin: 'kotlin-kapt'
 
             dependencies {
                 def room_version = "1.1.1"

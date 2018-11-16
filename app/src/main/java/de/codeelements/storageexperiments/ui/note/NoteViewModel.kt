@@ -21,14 +21,12 @@ class NoteViewModel : ViewModel() {
     }
 
     fun setCurrentNoteId(noteId: Long) {
-        noteId.takeIf { it >= 0 }?.also {
-            compositeDisposable.add(
-                storage.observeNote(it).take(1)
-                    .subscribe { note ->
-                        noteSubject.onNext(note)
-                    }
-            )
-        }
+        compositeDisposable.add(
+            storage.observeNote(noteId).take(1)
+                .subscribe { note ->
+                    noteSubject.onNext(note)
+                }
+        )
     }
 
     fun storeNote(title: String, text: String) {

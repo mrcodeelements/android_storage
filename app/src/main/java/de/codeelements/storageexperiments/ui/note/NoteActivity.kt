@@ -22,7 +22,7 @@ class NoteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         noteViewModel = ViewModelProviders.of(this)[NoteViewModel::class.java]
         if (intent.hasExtra(ARG_NOTE_ID)) {
-            noteViewModel.setCurrentNoteId(intent.getLongExtra(ARG_NOTE_ID, -1))
+            noteViewModel.setCurrentNoteId(intent.getLongExtra(ARG_NOTE_ID, 0))
         }
         setContentView(R.layout.activity_note)
     }
