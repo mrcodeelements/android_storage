@@ -3,11 +3,12 @@ package de.codeelements.storageexperiments.storage
 import android.app.Application
 import de.codeelements.storageexperiments.model.Note
 import de.codeelements.storageexperiments.storage.realm.RealmNote
+import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
 
 class RealmStorage(application: Application) : Storage {
-
     init {
         Realm.init(application)
     }
@@ -30,8 +31,7 @@ class RealmStorage(application: Application) : Storage {
                     }.toFlowable()
             }.toObservable()
 
-    override fun observeNote(id: Long): Observable<Note> = realm
-        .where(RealmNote::class.java).equalTo("id", id).findFirstAsync()
+    override fun observeNote(id: Long): Observable<Note> = realm.queryNote(id).findFirstAsync()
         .asFlowable<RealmNote>()
         .filter {
             it.isLoaded
@@ -39,13 +39,37 @@ class RealmStorage(application: Application) : Storage {
             it.toNote()
         }.toObservable()
 
-    override fun store(note: Note) {
-        realm.use { managedRealm ->
-            managedRealm.executeTransactionAsync { asyncRealm ->
-                asyncRealm.insertOrUpdate(RealmNote(note))
+    private fun Realm.queryNote(id: Long) = where(RealmNote::class.java).equalTo("id", id)
+
+    override fun store(note: Note): Completable =
+        Completable.create {
+            try {
+                realm.use { managedRealm ->
+                    managedRealm.executeTransaction { transactionRealm ->
+                        transactionRealm.insertOrUpdate(RealmNote(note))
+                    }
+                }
+            } catch (e: Exception) {
+                it.onError(e)
             }
-        }
-    }
+
+            it.onComplete()
+        }.subscribeOn(Schedulers.io())
+
+    override fun remove(note: Note): Completable =
+        Completable.create {
+            try {
+                realm.use {
+                    it.executeTransaction {
+                        it.queryNote(note.id!!).findAll().deleteAllFromRealm()
+                    }
+                }
+            } catch (e: Exception) {
+                it.onError(e)
+            }
+
+            it.onComplete()
+        }.subscribeOn(Schedulers.io())
 }
 
 fun RealmNote.toNote() = Note(id, title, text)

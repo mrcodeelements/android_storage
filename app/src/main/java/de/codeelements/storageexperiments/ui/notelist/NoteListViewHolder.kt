@@ -21,7 +21,7 @@ class NoteListViewHolder(
     val noteAdapter = NoteAdapter().also { noteAdapter ->
         val recycler = view.recycler
         recycler.adapter = noteAdapter
-        val itemTouchHelper = ItemTouchHelper(object :
+        ItemTouchHelper(object :
             ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
             override fun onMove(p0: RecyclerView, p1: RecyclerView.ViewHolder, p2: RecyclerView.ViewHolder): Boolean {
                 log("Move")
