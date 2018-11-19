@@ -34,6 +34,14 @@ class RoomStorage(application: Application) : Storage {
         it.toNote()
     }.toObservable()
 
+    override fun remove(note: Note) =
+        Completable.fromAction {
+            RoomNote(note).also {
+                noteDao.delete(it)
+            }
+        }.subscribeOn(Schedulers.io())
+
+
     override fun store(note: Note) =
         Completable.fromAction {
             RoomNote(note).also {

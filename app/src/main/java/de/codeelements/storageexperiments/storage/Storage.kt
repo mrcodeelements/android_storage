@@ -12,4 +12,5 @@ interface Storage {
 
     fun observeNote(id: Long): Observable<Note>
     fun store(note: Note): Completable
+    fun remove(note: Note): Completable
 }

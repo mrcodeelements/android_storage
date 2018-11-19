@@ -1,5 +1,8 @@
 package de.codeelements.storageexperiments.ui.notelist
 
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import de.codeelements.storageexperiments.R
@@ -15,8 +18,29 @@ class NoteListViewHolder(
     val notesListViewModel: NotesListViewModel
 ) {
     val view = inflater.inflate(R.layout.fragment_list, parent, false)
-    val noteAdapter = NoteAdapter().also {
-        view.recycler.adapter = it
+    val noteAdapter = NoteAdapter().also { noteAdapter ->
+        val recycler = view.recycler
+        recycler.adapter = noteAdapter
+        val itemTouchHelper = ItemTouchHelper(object :
+            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
+            override fun onMove(p0: RecyclerView, p1: RecyclerView.ViewHolder, p2: RecyclerView.ViewHolder): Boolean {
+                log("Move")
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
+                noteAdapter.notifyItemRemoved(position)
+                (viewHolder as NoteViewHolder).item?.also {
+                    notesListViewModel.remove(it)
+                }
+            }
+
+        }).attachToRecyclerView(recycler)
+
+    }
+
+    private fun log(msg: String) {
+        Log.d(NoteListViewHolder::class.java.simpleName, msg)
     }
 
     private val compositeDisposable = CompositeDisposable(

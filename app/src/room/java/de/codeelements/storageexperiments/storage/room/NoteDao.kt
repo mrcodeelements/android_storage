@@ -1,9 +1,6 @@
 package de.codeelements.storageexperiments.storage.room
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.Query
-import android.arch.persistence.room.Update
+import android.arch.persistence.room.*
 import io.reactivex.Flowable
 
 @Dao
@@ -19,4 +16,7 @@ interface NoteDao {
 
     @Update
     fun update(vararg notes: RoomNote)
+
+    @Delete
+    fun delete(vararg notes: RoomNote)
 }
