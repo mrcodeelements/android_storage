@@ -6,12 +6,14 @@ import de.codeelements.storageexperiments.storage.objectbox.MyObjectBox
 import de.codeelements.storageexperiments.storage.objectbox.ObjectBoxNote
 import de.codeelements.storageexperiments.storage.objectbox.ObjectBoxNote_
 import io.objectbox.rx.RxQuery
+import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 
 class ObjectBoxStorage(application: Application) : Storage {
     private val objectBox = MyObjectBox.builder().androidContext(application).build()
-    private val noteBox = objectBox.boxFor(ObjectBoxNote::class.java)
 
+    private val noteBox = objectBox.boxFor(ObjectBoxNote::class.java)
     override val notesObservable: Observable<List<Note>>
         get() = RxQuery.observable(noteBox.query().build()).map {
             it.map { objectBoxNote: ObjectBoxNote ->
@@ -28,8 +30,14 @@ class ObjectBoxStorage(application: Application) : Storage {
                 Note(objectBoxNote.id, objectBoxNote.title, objectBoxNote.text)
             }
 
-    override fun store(note: Note) {
-        noteBox.put(ObjectBoxNote(note.id, note.title, note.text))
-    }
+    override fun store(note: Note): Completable =
+        Completable.fromAction {
+            noteBox.put(ObjectBoxNote(note.id, note.title, note.text))
+        }.subscribeOn(Schedulers.io())
+
+    override fun remove(note: Note): Completable =
+        Completable.fromAction {
+            noteBox.remove(note.id!!)
+        }.subscribeOn(Schedulers.io())
 
 }
