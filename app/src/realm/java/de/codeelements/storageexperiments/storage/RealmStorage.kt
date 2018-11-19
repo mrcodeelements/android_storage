@@ -42,33 +42,21 @@ class RealmStorage(application: Application) : Storage {
     private fun Realm.queryNote(id: Long) = where(RealmNote::class.java).equalTo("id", id)
 
     override fun store(note: Note): Completable =
-        Completable.create {
-            try {
-                realm.use { managedRealm ->
-                    managedRealm.executeTransaction { transactionRealm ->
-                        transactionRealm.insertOrUpdate(RealmNote(note))
-                    }
+        Completable.fromAction {
+            realm.use { managedRealm ->
+                managedRealm.executeTransaction { transactionRealm ->
+                    transactionRealm.insertOrUpdate(RealmNote(note))
                 }
-            } catch (e: Exception) {
-                it.onError(e)
             }
-
-            it.onComplete()
         }.subscribeOn(Schedulers.io())
 
     override fun remove(note: Note): Completable =
-        Completable.create {
-            try {
-                realm.use {
-                    it.executeTransaction {
-                        it.queryNote(note.id!!).findAll().deleteAllFromRealm()
-                    }
+        Completable.fromAction {
+            realm.use {
+                it.executeTransaction {
+                    it.queryNote(note.id!!).findAll().deleteAllFromRealm()
                 }
-            } catch (e: Exception) {
-                it.onError(e)
             }
-
-            it.onComplete()
         }.subscribeOn(Schedulers.io())
 }
 
